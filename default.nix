@@ -10,7 +10,7 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [pkg-config];
 
-  buildInputs = with pkgs; [ jack1 jack2 alsaLib alsaUtils ];
+  buildInputs = with pkgs; [jack1 jack2 alsaLib alsaUtils];
 
   src = ./.;
 

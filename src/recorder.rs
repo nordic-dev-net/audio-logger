@@ -61,7 +61,7 @@ impl Recorder {
 		let host = get_host(host)?;
 
 		// Set up the input device and stream with the default input config.
-		let device = get_device(host)?;
+		let device = get_device_by_name(host, &"U192k")?;
 
 		// Get default config for the device.
 		let default_config = get_default_config(&device)?;

@@ -25,13 +25,24 @@ pub fn get_host(host: HostId) -> Result<Host, Error> {
 	)?)
 }
 
-/// # Get Device
+/// # Get Default Device
 ///
 /// Returns the default input device for the host if it's available.
-pub fn get_device(host: Host) -> Result<Device, Error> {
+pub fn get_default_device(host: Host) -> Result<Device, Error> {
 	Ok(host.default_input_device()
 		.ok_or(anyhow!("No input device available. Try running `jackd -R -d alsa -d hw:0`",
 	))?)
+}
+
+/// # Get Device By Name
+///
+/// Returns the device with the given id if it's available.
+pub fn get_device_by_name(host: Host, name: &str) -> Result<Device, Error> {
+    Ok(host.devices()?
+        .into_iter()
+        .find(|device| device.name().unwrap().contains(name))
+        .ok_or(anyhow!("Requested device not found!"))?
+    )
 }
 
 /// # Get Default Config
