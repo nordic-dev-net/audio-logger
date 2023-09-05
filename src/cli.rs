@@ -73,6 +73,9 @@ pub struct Rec {
 	/// Buffer size in frames
 	#[clap(long, value_name = "FRAMES")]
 	pub buffer_size: Option<u32>,
+
+    #[clap(long, value_name = "DEVICE-NAME")]
+    pub device_name: Option<String>,
 }
 #[derive(Parser, Debug)]
 #[clap(about =	"Play audio from a .wav file.

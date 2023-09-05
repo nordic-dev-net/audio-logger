@@ -52,6 +52,7 @@ impl Recorder {
 		channels: u16,
 		buffer_size: u32,
 		max_seconds: Option<u64>,
+        device_name: Option<String>,
 	) -> Result<Self, Error> {
 
 		// Create interrupt handles to be used by the stream or batch loop.
@@ -61,7 +62,11 @@ impl Recorder {
 		let host = get_host(host)?;
 
 		// Set up the input device and stream with the default input config.
-		let device = get_device_by_name(host, &"U192k")?;
+		let device = if let Some(name) = device_name {
+            get_device_by_name(host, &name)?
+        } else {
+            get_default_device(host)?
+        };
 
 		// Get default config for the device.
 		let default_config = get_default_config(&device)?;
@@ -237,6 +242,7 @@ pub fn record(args: &Rec) -> Result<(), Error> {
 		args.channels.unwrap_or(DEFAULT_CHANNEL_COUNT),
 		args.buffer_size.unwrap_or(DEFAULT_BUFFER_SIZE),
 		args.max_seconds,
+        args.device_name.clone(),
 	)?;
 
 	match args.batch_recording {
