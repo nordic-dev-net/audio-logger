@@ -38,10 +38,16 @@ pub fn get_default_device(host: Host) -> Result<Device, Error> {
 ///
 /// Returns the device with the given id if it's available.
 pub fn get_device_by_name(host: Host, name: &str) -> Result<Device, Error> {
+    // List of device names as strings for debugging.
+    let mut device_names = Vec::new();
+    for device in host.devices()? {
+        device_names.push(device.name()?);
+    }
+    let device_names_string = device_names.join(", ");
     Ok(host.devices()?
         .into_iter()
         .find(|device| device.name().unwrap().contains(name))
-        .ok_or(anyhow!("Requested device not found!"))?
+        .ok_or(anyhow!("Requested device not found!\nAvailable devices:\n{device_names_string}"))?
     )
 }
 
